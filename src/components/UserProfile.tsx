@@ -11,7 +11,7 @@ function UserProfile() {
     const [login, { isLoading: loggingIn }] = useLoginMutation()
     const [logOut, { isLoading: loggingOut }] = useLogoutMutation()
 
-    console.log(userInfo)
+    // console.log(userInfo)
 
     const handleLogOut = async () => {
         try {

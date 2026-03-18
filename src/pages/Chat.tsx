@@ -4,7 +4,7 @@ import ChatBox from '../components/Chatbox'
 
 function Chat() {
   return (
-      <div className='w-full h-full flex place-content-start place-items-center bg-(--background) gap-20'>
+      <div className='w-full h-full flex place-content-start place-items-center bg-(--background) gap-2'>
         <Sidebar />
           <ChatBox/>
     </div>

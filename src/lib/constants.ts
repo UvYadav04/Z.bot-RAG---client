@@ -11,6 +11,7 @@ export const URIS = {
     GET_DOCUMENTS: `${endPoints.DOCUMENTS}/documents`,
     UPLOAD_DOCUMENT: `${endPoints.DOCUMENTS}/upload_document`,
     DELETE_DOCUMENT: (id: string) => `${endPoints.DOCUMENTS}/${id}`,
-    GET_CHATS: `${endPoints.CHAT}/getChats`,
+    GET_USER_CHATS:  `${endPoints.CHAT}/getChats`,
+    GET_CHAT_ID: `${endPoints.CHAT}/getChatId`,
     QUERY: `${endPoints.CHAT}/query`,
 }

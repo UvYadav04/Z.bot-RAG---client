@@ -1,14 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { URIS } from "../lib/constants"
 import type { BaseResponse } from "./userApiSlice"
+import type { messagesInterface, userChatInterface } from "../components/Chatbox"
 
 interface ChatResponse extends BaseResponse {
-    id: string,
-    name: string,
-    messages: {
-        "user": string,
-        "assistant": string
-    }[]
+    chats:userChatInterface[]
+}
+
+interface ChatIdResponse extends BaseResponse {
+    chatId: string
 }
 
 interface queryResponse extends BaseResponse {
@@ -20,14 +20,20 @@ export const chatApi = createApi({
     reducerPath: "chatApi",
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_SERVER_URI,
-        credentials: "include"
     }),
     endpoints: (builder) => ({
-        getChat: builder.mutation<ChatResponse, void>({
-            query: (body) => ({
-                url: URIS.GET_CHATS,
-                method: "POST",
-                body
+        getChatId: builder.query<ChatIdResponse, void>({
+            query: () => ({
+                url: URIS.GET_CHAT_ID,
+                method: "GET",
+                credentials: 'include'
+            })
+        }),
+        getChats: builder.query<ChatResponse,void>({
+            query: () => ({
+                url: URIS.GET_USER_CHATS,
+                method: "GET",
+                credentials: 'include'
             })
         }),
         queryChat: builder.mutation<queryResponse, { query: string, creativity: string }>({
@@ -37,10 +43,11 @@ export const chatApi = createApi({
                 body: {
                     query,
                     creativity
-                }
+                },
+                credentials: 'include'
             })
         })
     })
 })
 
-export const { useQueryChatMutation ,useGetChatMutation} = chatApi
+export const { useQueryChatMutation, useGetChatsQuery,useGetChatIdQuery } = chatApi
