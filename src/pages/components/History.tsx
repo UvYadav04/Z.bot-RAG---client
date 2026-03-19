@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useGetChatIdQuery, useGetChatsQuery, useLazyNewChatQuery, useUpdateCurrentChatIdMutation } from '../services/chatApiSlice'
-import { useChatContext } from '../context/chatContext'
+import { useGetChatIdQuery, useGetChatsQuery, useLazyNewChatQuery, useUpdateCurrentChatIdMutation } from '../../services/chatApiSlice'
+import { useChatContext } from '../../context/chatContext'
 import { toast } from 'sonner'
 import { SquarePen } from 'lucide-react'
 import type { userChatInterface } from './Chatbox'
-import { useGetUserInfoQuery } from '../services/userApiSlice'
+import { useGetUserInfoQuery } from '../../services/userApiSlice'
 
 function History() {
 

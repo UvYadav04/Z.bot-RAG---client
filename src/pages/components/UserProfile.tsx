@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode"
 import { GoogleLogin } from "@react-oauth/google"
-import { useGetUserInfoQuery, useLoginMutation, useLogoutMutation } from "../services/userApiSlice"
+import { useGetUserInfoQuery, useLoginMutation, useLogoutMutation } from "../../services/userApiSlice"
 import { Loader2Icon, LoaderIcon, LogOut } from "lucide-react"
 import { toast } from "sonner"
 

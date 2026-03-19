@@ -1,10 +1,10 @@
 import { Loader, MinusCircleIcon, PlusCircleIcon, Upload } from 'lucide-react'
 import React, { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
-import { useGetDocumentsQuery, useUploadDocumentMutation } from '../services/documentApiSlice';
+import { useGetDocumentsQuery, useUploadDocumentMutation } from '../../services/documentApiSlice';
 import { toast } from 'sonner';
-import { useChatContext } from '../context/chatContext';
-import { useGetUserInfoQuery } from '../services/userApiSlice';
-import { useLazyNewChatQuery } from '../services/chatApiSlice';
+import { useChatContext } from '../../context/chatContext';
+import { useGetUserInfoQuery } from '../../services/userApiSlice';
+import { useLazyNewChatQuery } from '../../services/chatApiSlice';
 interface DocsInterface {
     name: string,
     _id: string,
@@ -39,7 +39,9 @@ function DocumentSection() {
 
             if (!success)
                 throw new Error(message)
-            let ids = Array.from(documents).map((item) => item._id)
+            console.log(documents)
+            let ids = Array.from(documents).map((item) => item.id)
+            console.log(ids)
             setCurrentUsingDocs((prev) => {
                 const newSet = new Set(prev)
                 ids.forEach((item) => newSet.add(item))
@@ -85,9 +87,9 @@ function DocumentSection() {
                     if (docFiles) uploadDocuments(docFiles);
                 }}
             />
-            <div className="docs w-full flex flex-col gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
+            <div className="docs w-full flex flex-col-reverse place-content-start place-items-center gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
                 {uploadingDocs?.map((item) => {
-                    return <div className="document flex gap-1 place-content-start place-items-center w-full border border-slate-200 px-2 py-0.5  " >
+                    return <div className="document flex  gap-1 place-content-start place-items-center w-full border border-slate-200 px-2 py-0.5  " >
                         <h3 className='text-sm text-start w-full line-clamp-1'>{item.name}</h3>
                         <Loader
                             className="animate-spin"

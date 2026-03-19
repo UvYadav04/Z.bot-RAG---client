@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { URIS } from "../lib/constants"
 import type { BaseResponse } from "./userApiSlice"
-import type { messagesInterface, userChatInterface } from "../components/Chatbox"
+import type { messagesInterface, userChatInterface } from "../pages/components/Chatbox"
 
 interface ChatResponse extends BaseResponse {
     chats: userChatInterface[]

@@ -1,5 +1,5 @@
 import React, { useContext, useState, type Dispatch, type SetStateAction } from "react"
-import type { messagesInterface } from "../components/Chatbox"
+import type { messagesInterface } from "../pages/components/Chatbox"
 
 interface chatContextInterface {
     currentChatId: string,

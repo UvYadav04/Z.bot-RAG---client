@@ -1,15 +1,17 @@
 import { Menu, SquarePen } from "lucide-react"
-import { useChatContext } from "../context/chatContext"
-import { useLazyNewChatQuery } from "../services/chatApiSlice"
+import { useChatContext } from "../../context/chatContext"
+import { useLazyNewChatQuery } from "../../services/chatApiSlice"
 import { toast } from "sonner"
 import DocumentSection from "./Document"
 import History from "./History"
 import UserProfile from "./UserProfile"
+import { Sheet, SheetContent, SheetTrigger } from "../../components/ui/sheet"
+import { Button } from "../../components/ui/button"
 function Sidebar() {
     return (
         <>
             {/* ✅ Mobile Navbar */}
-            <div className="md:hidden flex items-center p-2 border-b">
+            <div className=" lg:hidden flex place-content-start  place-items-center p-2">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" size="icon">
@@ -17,16 +19,16 @@ function Sidebar() {
                         </Button>
                     </SheetTrigger>
 
-                    <SheetContent side="left" className="w-64 p-0">
+                    <SheetContent side="left" style={{ background:'url(public/background.jpg)'}} className="w-44 p-0 bg-slate-600">
                         <SidebarContent />
                     </SheetContent>
                 </Sheet>
 
-                <h2 className="ml-3 font-semibold">Z.bot</h2>
+                {/* <h2 className="ml-3 font-semibold">Z.bot</h2> */}
             </div>
 
             {/* ✅ Desktop Sidebar */}
-            <div className="hidden md:flex w-1/4 h-screen">
+            <div className="lg:flex hidden  w-1/4 h-screen">
                 <SidebarContent />
             </div>
         </>
@@ -50,7 +52,6 @@ function SidebarContent() {
             toast.info(message)
             return
         }
-        toast.info(chatId)
         setSelectedChat(chatId)
         setCurrentChatId(chatId)
     }

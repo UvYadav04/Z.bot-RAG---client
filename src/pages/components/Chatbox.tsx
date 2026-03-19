@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useChatContext } from '../context/chatContext';
-import { useGetChatIdQuery, useGetChatsQuery, useLazyNewChatQuery, useQueryChatMutation, useUpdateCurrentChatIdMutation } from '../services/chatApiSlice';
+import { useChatContext } from '../../context/chatContext';
+import { useGetChatIdQuery, useGetChatsQuery, useLazyNewChatQuery, useQueryChatMutation, useUpdateCurrentChatIdMutation } from '../../services/chatApiSlice';
 import Markdown from "react-markdown"
 import { toast } from 'sonner';
-import { useGetUserInfoQuery } from '../services/userApiSlice';
+import { useGetUserInfoQuery } from '../../services/userApiSlice';
 import { SquarePen } from 'lucide-react';
 import { v4 as uuid } from "uuid"
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
@@ -30,12 +30,12 @@ function ChatBox() {
   const { currentUsingDocs, selectedChat, currentMessages, setCurrentMessages } = useChatContext()
   const { refetch } = useGetChatsQuery()
 
-
   const streamResponse = async (query: string) => {
     if (query === "") {
       toast.info("please send a valid input")
       return;
     }
+    // toast.info(currentUsingDocs.size)
     if (currentUsingDocs.size === 0) {
       toast.info("please upload or select some document to query")
       return;
@@ -75,9 +75,12 @@ function ChatBox() {
   // auto scroll to bottom while streaming
   useEffect(() => {
     if (messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+      messagesRef.current.scrollTo({
+        top: messagesRef.current.scrollHeight,
+        behavior: "smooth",
+      })
     }
-  }, [result]);
+  }, [result, currentMessages]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -91,21 +94,20 @@ function ChatBox() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [current, currentUsingDocs]);
 
 
 
   return (
     <div className="chatPage h-full w-full flex place-content-center place-items-center ">
-      <div className='w-4/6 h-screen   pb-1   box-border flex flex-col  px-2 '>
-        <div className="w-full h-full flex flex-col place-items-center place-content-start gap-3 ">
+      <div className='md:w-4/6 w-full h-screen   pb-1   box-border flex flex-col  px-2 '>
+        <div className="w-full h-full flex flex-col place-items-center place-content-start gap-3 relative">
           < div
             ref={messagesRef}
             className="flex-1 flex flex-col overflow-y-scroll w-full h-full p-6  gap-4"
             style={{ scrollbarWidth: "none" }}
           >
-            {loading && <div className="text-gray-500 mb-2">Thinking...</div>
-            }
+
             {
               currentMessages.length === 0 && <div className="h-full w-full flex place-content-center place-items-center">
                 <div className="w-[70%] h-auto">
@@ -114,13 +116,14 @@ function ChatBox() {
                     loop
                     autoplay
                   />
-               </div>
+                </div>
               </div>
             }
             {currentMessages?.map((item) => {
               return <MessageBox message={item} />
             })}
             {result && <MessageBox message={{ content: result, role: "zensky" }} />}
+            {loading && <MessageBox message={{ content: "Thinking...", role: "zensky" }} />}
           </ div>
 
           < div className="border bottom-0 float-end  box-border w-full bg-white  flex gap-3 rounded-sm" >
