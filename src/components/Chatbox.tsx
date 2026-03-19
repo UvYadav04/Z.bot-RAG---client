@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { useGetUserInfoQuery } from '../services/userApiSlice';
 import { SquarePen } from 'lucide-react';
 import { v4 as uuid } from "uuid"
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export interface messagesInterface {
   content: string,
@@ -104,6 +105,17 @@ function ChatBox() {
             style={{ scrollbarWidth: "none" }}
           >
             {loading && <div className="text-gray-500 mb-2">Thinking...</div>
+            }
+            {
+              currentMessages.length === 0 && <div className="h-full w-full flex place-content-center place-items-center">
+                <div className="w-[70%] h-auto">
+                  <DotLottieReact
+                    src="public/Ai Robot Animation.lottie"
+                    loop
+                    autoplay
+                  />
+               </div>
+              </div>
             }
             {currentMessages?.map((item) => {
               return <MessageBox message={item} />

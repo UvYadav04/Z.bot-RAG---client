@@ -1,19 +1,48 @@
-
-import { SquarePen } from 'lucide-react';
-import UserProfile from './UserProfile';
-import DocumentSection from './Document';
-import { useChatContext } from '../context/chatContext';
-import History from './History';
-import { useLazyNewChatQuery } from '../services/chatApiSlice';
-import { toast } from 'sonner';
-
-
+import { Menu, SquarePen } from "lucide-react"
+import { useChatContext } from "../context/chatContext"
+import { useLazyNewChatQuery } from "../services/chatApiSlice"
+import { toast } from "sonner"
+import DocumentSection from "./Document"
+import History from "./History"
+import UserProfile from "./UserProfile"
 function Sidebar() {
+    return (
+        <>
+            {/* ✅ Mobile Navbar */}
+            <div className="md:hidden flex items-center p-2 border-b">
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" size="icon">
+                            <Menu size={20} />
+                        </Button>
+                    </SheetTrigger>
+
+                    <SheetContent side="left" className="w-64 p-0">
+                        <SidebarContent />
+                    </SheetContent>
+                </Sheet>
+
+                <h2 className="ml-3 font-semibold">Z.bot</h2>
+            </div>
+
+            {/* ✅ Desktop Sidebar */}
+            <div className="hidden md:flex w-1/4 h-screen">
+                <SidebarContent />
+            </div>
+        </>
+    )
+}
+
+export default Sidebar
+
+
+
+
+
+
+function SidebarContent() {
     const { setCurrentChatId, setSelectedChat } = useChatContext()
-    const [createNewChat, { isLoading: creatingNewChat }] = useLazyNewChatQuery()
-
-
-    // console.log(data)
+    const [createNewChat] = useLazyNewChatQuery()
 
     const handleNewChat = async () => {
         const { chatId, success, message } = await createNewChat().unwrap()
@@ -27,21 +56,20 @@ function Sidebar() {
     }
 
     return (
-        <div className='w-1/4 pt-2 px-2  h-screen  text-(--foreground) flex flex-col place-content-start place-items-center'>
-            {/* <p className='text-lg font-bold w-full text-start p text-blue-800'>Z.bot</p> */}
+        <div className='w-full h-full pt-2 px-2 flex flex-col gap-2'>
             <div className='border-top h-0 border-white border mb-2 w-full ' />
-            <button className='w-full cursor-pointer py-0  rounded-sm text-(--text) bg-white/80 flex place-content-center gap-2 place-items-center' onClick={() => {
-                handleNewChat()
-            }}><h4>New Chat</h4> <SquarePen size={20} /></button>
+
+            <button
+                className='w-full cursor-pointer py-1 rounded-sm text-(--text) bg-white/80 flex place-content-center gap-2 place-items-center'
+                onClick={handleNewChat}
+            >
+                <h4>New Chat</h4>
+                <SquarePen size={20} />
+            </button>
+
             <DocumentSection />
             <History />
             <UserProfile />
         </div>
     )
 }
-
-export default Sidebar
-
-
-
-
