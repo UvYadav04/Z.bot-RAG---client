@@ -48,7 +48,7 @@ function UserProfile() {
                 />
             )
                 : (
-                    <div className="flex items-center gap-2 text-xl group">
+                    <div className="flex items-center gap-2 text-xl group bg-white/60 p-2 rounded-sm">
                         <div className="size-6 rounded-full flex place-content-center place-items-center bg-amber-300 text-sm font-bold">{userInfo?.name.charAt(0)}</div>
                         <span className="text-sm">{userInfo?.name}</span>
                         <span className="hidden group-hover:block cursor-pointer ms-auto me-2 text-red-500"><LogOut onClick={() => handleLogOut()} size={20} /></span>

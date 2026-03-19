@@ -4,6 +4,7 @@ import { useGetDocumentsQuery, useUploadDocumentMutation } from '../services/doc
 import { toast } from 'sonner';
 import { useChatContext } from '../context/chatContext';
 import { useGetUserInfoQuery } from '../services/userApiSlice';
+import { useLazyNewChatQuery } from '../services/chatApiSlice';
 interface DocsInterface {
     name: string,
     _id: string,
@@ -18,9 +19,8 @@ function DocumentSection() {
     const [uploadingDocs, setUploadingDocs] = useState<File[] | null>(null)
     const docRef = useRef<HTMLInputElement | null>(null)
     const [uploadDocs, { isLoading }] = useUploadDocumentMutation()
-    const { currentUsingDocs, setCurrentUsingDocs } = useChatContext()
+    const { currentUsingDocs, setCurrentUsingDocs, } = useChatContext()
 
-    // console.log(data)
 
     const uploadDocuments = async (files: FileList) => {
         try {
@@ -56,20 +56,21 @@ function DocumentSection() {
 
     useEffect(() => {
         // console.log(data)
-        if (data?.documents)
-            setUploadedDocs(data.documents)
+        console.log(data)
+        if (Array.isArray(data?.documents))
+            setUploadedDocs(data?.documents)
+        else
+            setUploadedDocs([])
     }, [data])
 
     useEffect(() => {
-        if (!userData?.info) {
-            setUploadedDocs([])
-        }
-        else
+        if (userData?.info)
             refetch()
     }, [userData])
     return (
-        <div className="docs w-full  flex flex-col place-content-start gap-2 place-items-center h-full px-0 py-1 bg-white overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
-            <h3 className='border-2 border-(--border) w-full text-center text-(--text) flex flex-row place-content-center place-items-center gap-4 group cursor-pointer' onClick={() => docRef.current?.click()}>
+        <div className="docs w-full  flex flex-col place-content-start gap-2 place-items-center h-1/2 px-0 py-1  overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
+
+            <h3 className='bg-white/80 rounded-sm  w-full text-center text-(--text) flex flex-row place-content-center place-items-center gap-4 group cursor-pointer' onClick={() => docRef.current?.click()}>
                 <span>Upload Document</span>
                 <span className='w-fit float-right '><Upload size={20} className='w-fit ' /></span>
             </h3>
@@ -108,7 +109,7 @@ export default DocumentSection
 const DocItem = ({ doc, currentDocs, setCurrentDocs }: { doc: DocsInterface, currentDocs: Set<string>, setCurrentDocs: Dispatch<SetStateAction<Set<string>>> }) => {
     // console.log(doc)
     return (
-        <div className="document flex gap-1 place-content-start place-items-center w-full border border-slate-200 px-2 py-0.5  " >
+        <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5  " >
             <h3 className='text-sm text-start w-full line-clamp-1'>{doc.name}</h3>
             <div className="icon" title={currentDocs.has(doc._id) ? "Remove from Context" : "Add to Context"}>
                 {currentDocs.has(doc._id) ? (

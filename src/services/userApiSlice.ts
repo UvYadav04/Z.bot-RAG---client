@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { URIS } from '../lib/constants'
+import { chatApi } from "./chatApiSlice";
 
 export interface BaseResponse {
     success: boolean,
@@ -33,7 +34,11 @@ export const userApi = createApi({
                 body: { email, name },
                 credentials: 'include'
             }),
-            invalidatesTags: ["User"]
+            invalidatesTags: ["User"],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await queryFulfilled;
+                dispatch(chatApi.util.invalidateTags(['userChat','chatId']));
+            },
         }),
 
         logout: builder.mutation<BaseResponse, void>({
@@ -42,7 +47,11 @@ export const userApi = createApi({
                 method: "POST",
                 credentials: 'include'
             }),
-            invalidatesTags: ["User"]
+            invalidatesTags: ["User"],
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                await queryFulfilled;
+                dispatch(chatApi.util.invalidateTags(['userChat','chatId']));
+            },
         })
 
     })
