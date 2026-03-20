@@ -72,7 +72,7 @@ function DocumentSection() {
     return (
         <div className="docs w-full  flex flex-col place-content-start gap-2 place-items-center h-1/2 px-0 py-1  overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
 
-            <h3 className='bg-white/80 rounded-sm  w-full text-center text-(--text) flex flex-row place-content-center place-items-center gap-4 group cursor-pointer' onClick={() => docRef.current?.click()}>
+            <h3 className='bg-white/80 rounded-sm py-1  w-full text-center text-(--text) flex flex-row place-content-center place-items-center gap-4 group cursor-pointer' onClick={() => docRef.current?.click()}>
                 <span>Upload Document</span>
                 <span className='w-fit float-right '><Upload size={20} className='w-fit ' /></span>
             </h3>
@@ -89,7 +89,7 @@ function DocumentSection() {
             />
             <div className="docs w-full flex flex-col-reverse place-content-start place-items-center gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
                 {uploadingDocs?.map((item) => {
-                    return <div className="document flex  gap-1 place-content-start place-items-center w-full border border-slate-200 px-2 py-0.5  " >
+                    return <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5   " >
                         <h3 className='text-sm text-start w-full line-clamp-1'>{item.name}</h3>
                         <Loader
                             className="animate-spin"

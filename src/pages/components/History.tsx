@@ -15,8 +15,6 @@ function History() {
     const { data: chatIdInfo } = useGetChatIdQuery()
 
 
-
-
     const handleSetChatId = async (id: string) => {
         const { success, message } = await setSelectedChatId(id).unwrap()
         if (!success) {

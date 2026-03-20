@@ -24,7 +24,7 @@ function UserProfile() {
     }
 
     if (loggingIn || isLoading || loggingOut)
-        return <div className="w-full text-center place-content-center place-items-center" >
+        return <div className="w-full text-center place-content-center place-items-center googleLogin float-end mt-auto mb-0 p-1 h-fit" >
             <LoaderIcon size={25} className="animate-spin w-fit my-2 rounded-full" />
         </div>
 
