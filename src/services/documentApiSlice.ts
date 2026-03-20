@@ -21,7 +21,8 @@ export const documentApi = createApi({
             query: () => ({
                 url: URIS.GET_DOCUMENTS,
                 method: "GET",
-                credentials:'include'
+                credentials: 'include',
+                timeout:1000
             }),
             providesTags: ["Documents"]
         }),
@@ -31,7 +32,8 @@ export const documentApi = createApi({
                 url: URIS.UPLOAD_DOCUMENT,
                 method: "POST",
                 body: formData,
-                credentials:'include'
+                credentials: 'include',
+                timeout:1000
             }),
             invalidatesTags: ["Documents"]
         }),
@@ -40,7 +42,8 @@ export const documentApi = createApi({
             query: ({ documentId }) => ({
                 url: URIS.DELETE_DOCUMENT(documentId),
                 method: "DELETE",
-                credentials:'include'
+                credentials: 'include',
+                timeout:1000
             }),
             invalidatesTags: ["Documents"]
         }),

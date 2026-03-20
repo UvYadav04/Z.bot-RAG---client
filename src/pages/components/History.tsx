@@ -6,13 +6,14 @@ import { Loader, SquarePen } from 'lucide-react'
 import type { userChatInterface } from './Chatbox'
 import { useGetUserInfoQuery } from '../../services/userApiSlice'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import Retry from './Retry'
 
 function History() {
 
-    const [setSelectedChatId, { isLoading: settingChatId }] = useUpdateCurrentChatIdMutation()
+    const [setSelectedChatId] = useUpdateCurrentChatIdMutation()
     const { currentChatId, setCurrentChatId, selectedChat, setSelectedChat, setCurrentMessages } = useChatContext()
     const [userChats, setUserChats] = useState<userChatInterface[]>([])
-    const { data, isLoading: gettingChats } = useGetChatsQuery()
+    const { data, isLoading: gettingChats, isFetching: fetchingChats, error: errorGettingChats, refetch } = useGetChatsQuery()
     const { data: chatIdInfo } = useGetChatIdQuery()
 
 
@@ -59,7 +60,7 @@ function History() {
 
     return (
         <div className='w-full h-[40%]   pb-1   box-border flex flex-col place-content-start place-items-center border-t-2 border-white'>
-            {gettingChats && <div className='lg:size-32 size-20 my-auto'>
+            {(gettingChats || (errorGettingChats && fetchingChats)) && <div className='lg:size-32 size-20 my-auto'>
                 <DotLottieReact
                     // src="public/robo.lottie"
                     src="public/Robot-Bot 3D.lottie"
@@ -67,8 +68,9 @@ function History() {
                     autoplay
                 />
             </div>}
+            {(errorGettingChats && !gettingChats && !fetchingChats) && <Retry message='Failed to load chats' retry={refetch} />}
             {
-                !gettingChats && <div className="chatsList  w-full h-full  flex flex-col place-content-start gap-2 pt-1">
+                (!gettingChats && !errorGettingChats) && <div className="chatsList  w-full h-full  flex flex-col place-content-start gap-2 pt-1">
 
                     <h2 className='text-white/80 text-xl font-semibold -mb-1 bg-slate-100/10 px-1 font-mono rounded-sm'>Continue Chats</h2>
                     <div className="chatList flex flex-col gap-1 place-content-start place-items-start w-full overflow-y-scroll " style={{ scrollbarWidth: 'none' }}>

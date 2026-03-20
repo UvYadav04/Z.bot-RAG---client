@@ -5,6 +5,8 @@ import { toast } from 'sonner';
 import { useChatContext } from '../../context/chatContext';
 import { useGetUserInfoQuery } from '../../services/userApiSlice';
 import { useLazyNewChatQuery } from '../../services/chatApiSlice';
+import { Button } from '../../components/ui/button';
+import Retry from './Retry';
 interface DocsInterface {
     name: string,
     _id: string,
@@ -13,12 +15,12 @@ interface DocsInterface {
 
 function DocumentSection() {
 
-    const { data, refetch } = useGetDocumentsQuery()
-    const { data: userData, isLoading: userLoading } = useGetUserInfoQuery()
+    const { data, refetch, isLoading: gettingDocuments, error: errorGettingDocs, isFetching: fetchingDocuments } = useGetDocumentsQuery()
+    const { data: userData } = useGetUserInfoQuery()
     const [uploadedDocs, setUploadedDocs] = useState<DocsInterface[]>([])
     const [uploadingDocs, setUploadingDocs] = useState<File[] | null>(null)
     const docRef = useRef<HTMLInputElement | null>(null)
-    const [uploadDocs, { isLoading }] = useUploadDocumentMutation()
+    const [uploadDocs] = useUploadDocumentMutation()
     const { currentUsingDocs, setCurrentUsingDocs, } = useChatContext()
     const [searchQuery, setSearchQuery] = useState<string>("")
 
@@ -85,18 +87,20 @@ function DocumentSection() {
                     e.target.value = ""
                 }}
             />
-            {uploadedDocs?.length > 4 && <input className='w-full h-fit text-sm bg-white p-0.5 focus:outline-none rounded-xs px-1 ' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='search documents' />}
+            {(errorGettingDocs && !gettingDocuments && !fetchingDocuments) && <Retry message='Failed to fetch documents' retry={refetch} />}
+            {(gettingDocuments || (errorGettingDocs && fetchingDocuments)) && <Loader className='animate-spin' />}
+            {((!gettingDocuments && !errorGettingDocs) && uploadedDocs?.length > 4) && <input className='w-full h-fit text-sm bg-white p-0.5 focus:outline-none rounded-xs px-1 ' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='search documents' />}
             <div className="docs w-full flex-1 flex flex-col place-content-start place-items-center gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
                 {uploadingDocs?.map((item) => {
                     return <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5   " >
                         <h3 className='text-sm text-start w-full line-clamp-1'>{item.name}</h3>
                         <Loader
-                            className="animate-spin"
+                            className="animate-spin w-fit"
                             size={20}
                         />
                     </div>
                 })}
-                {uploadedDocs?.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))?.map((item) => {
+                {!(gettingDocuments || fetchingDocuments) && !errorGettingDocs && uploadedDocs?.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))?.map((item) => {
                     return <DocItem doc={item} currentDocs={currentUsingDocs} setCurrentDocs={setCurrentUsingDocs} />
                 })}
             </div>

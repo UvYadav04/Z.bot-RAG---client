@@ -22,7 +22,8 @@ export const userApi = createApi({
         getUserInfo: builder.query<{ success: boolean, info: { name: string, userId: string, email: string } }, void>({
             query: () => ({
                 url: URIS.USER_INFO,
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000
             }),
 
             providesTags: ["User"]
@@ -33,7 +34,8 @@ export const userApi = createApi({
                 url: URIS.LOGIN,
                 method: "POST",
                 body: { email, name },
-                credentials: 'include'
+                credentials: 'include',
+                timeout:1000
             }),
             invalidatesTags: ["User"],
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -47,7 +49,8 @@ export const userApi = createApi({
             query: () => ({
                 url: URIS.LOGOUT,
                 method: "POST",
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000
             }),
             invalidatesTags: ["User"],
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {

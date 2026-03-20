@@ -27,49 +27,67 @@ function ChatBox() {
   const [result, setResult] = useState('');   // streaming result
   const [loading, setLoading] = useState(false)
   const messagesRef = useRef<HTMLDivElement | null>(null);
-  const { currentChatId,currentUsingDocs, selectedChat, currentMessages, setCurrentMessages } = useChatContext()
+  const { currentUsingDocs, selectedChat, currentMessages, setCurrentMessages } = useChatContext()
   const { refetch } = useGetChatsQuery()
 
   const streamResponse = useCallback(async (query: string) => {
-    if (query === "") {
-      toast.info("please send a valid input")
-      return;
-    }
-    // toast.info(currentUsingDocs.size)
-    if (currentUsingDocs.size === 0) {
-      toast.info("please upload or select some document to query")
-      return;
-    }
-    setLoading(true)
-    setCurrent("")
-    setCurrentMessages((prev) => {
-      return ([...prev, { content: query, time: Date.now().toString(), role: "user" }])
-    })
-    const res = await fetch(`${import.meta.env.VITE_SERVER_URI}/chat/query`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ query, creativity: "medium", "selected_chat_id": selectedChat, "document_ids": Array.from(currentUsingDocs) }),
-    });
-    setLoading(false)
-
-    const reader = res.body?.getReader();
-    const decoder = new TextDecoder();
-    let response = ""
-    while (true) {
-      const { done, value } = await reader!.read();
-      if (done) {
-        if (currentMessages.length === 0)
-          refetch()
-        setCurrentMessages((prev) => {
-          return ([...prev, { content: response, time: Date.now().toString(), role: "assistant" }])
-        })
-        setResult("")
-        break;
+    try {
+      if (query === "") {
+        toast.info("please send a valid input")
+        return;
       }
-      const chunk = decoder.decode(value, { stream: true });
-      response = response + chunk
-      setResult(prev => prev + chunk);
+      // toast.info(currentUsingDocs.size)
+      if (currentUsingDocs.size === 0) {
+        toast.info("please upload or select some document to query")
+        return;
+      }
+      setLoading(true)
+      setCurrent("")
+      setCurrentMessages((prev) => {
+        return ([...prev, { content: query, time: Date.now().toString(), role: "user" }])
+      })
+      const controller = new AbortController();
+
+      const timeout = setTimeout(() => {
+        controller.abort();
+      }, 10000)
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URI}/chat/query`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ query, creativity: "medium", "selected_chat_id": selectedChat, "document_ids": Array.from(currentUsingDocs) }),
+        signal: controller.signal
+      });
+      clearTimeout(timeout)
+      setLoading(false)
+      if (!res.ok) {
+
+        const errorText = await res.text(); // or res.json()
+        throw new Error(errorText || "Something went wrong");
+      }
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      let response = ""
+      while (true) {
+        const { done, value } = await reader!.read();
+        if (done) {
+          if (currentMessages.length === 0)
+            refetch()
+          setCurrentMessages((prev) => {
+            return ([...prev, { content: response, time: Date.now().toString(), role: "assistant" }])
+          })
+          setResult("")
+          break;
+        }
+        const chunk = decoder.decode(value, { stream: true });
+        response = response + chunk
+        setResult(prev => prev + chunk);
+      }
+    } catch (error) {
+      setCurrentMessages((prev) => {
+        return ([...prev, { content: "I am sorry, I couldnot generate response, please try again!!", time: Date.now().toString(), role: "assistant" }])
+      })
+      setResult("")
     }
   }, [currentMessages, currentUsingDocs, setCurrentMessages, setResult])
   // auto scroll to bottom while streaming

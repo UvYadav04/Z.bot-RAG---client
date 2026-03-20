@@ -27,7 +27,8 @@ export const chatApi = createApi({
             query: () => ({
                 url: URIS.GET_CHAT_ID,
                 method: "GET",
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000,
             }),
             providesTags:["chatId"]
         }),
@@ -35,7 +36,8 @@ export const chatApi = createApi({
             query: () => ({
                 url: URIS.GET_USER_CHATS,
                 method: "GET",
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000
             }),
             providesTags:["userChat"]
         }),
@@ -44,7 +46,9 @@ export const chatApi = createApi({
                 url: URIS.SET_CHAT_ID,
                 method: "POST",
                 body: JSON.stringify({ chatId }),
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000
+
             }),
             invalidatesTags: ['userChat']
         }),
@@ -53,14 +57,16 @@ export const chatApi = createApi({
                 url: URIS.QUERY,
                 method: "POST",
                 body: JSON.stringify({ query, creativity: creativity, "selected_chat_id": selectedChat, "document_ids": Array.from(currentUsingDocs) }),
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000
             })
         }),
         newChat: builder.query<ChatIdResponse, void>({
             query: () => ({
                 url: URIS.NEW_CHAT,
                 method: "GET",
-                credentials: 'include'
+                credentials: 'include',
+                timeout: 1000
             })
         })
     })
