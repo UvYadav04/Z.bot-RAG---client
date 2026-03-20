@@ -4,6 +4,9 @@ Z.bot (client side) is a **modern, responsive React-based frontend** designed to
 
 It provides a **real-time AI chat experience with document context**, enabling users to upload files, manage chats, and receive streamed responses — all with a clean and intuitive UI.
 
+<img width="1919" height="979" alt="image" src="https://github.com/user-attachments/assets/9b4f8e3b-89c8-4869-a3ae-5332e003a862" />
+
+
 ---
 
 ## ✨ Key Features
@@ -46,6 +49,20 @@ It provides a **real-time AI chat experience with document context**, enabling u
   * Optimized layout for usability
 
 ---
+
+### 📄 Reusable Documents (Context-Aware)
+
+Once a document is uploaded, it becomes **instantly reusable across chats** — no need to upload it again.
+
+Users can simply click the **"Add to Context"** button to include any previously uploaded document in the current conversation. The system will automatically retrieve relevant information from that document during query processing.
+
+This enables:
+
+- ♻️ **Seamless reuse** of documents across multiple chats  
+- ⚡ **Faster workflows** without repeated uploads  
+- 🧠 **Dynamic context selection** per query  
+
+Whether continuing an old conversation or starting a new one, documents remain **readily accessible and context-aware**.
 
 ## 🏗️ UI Architecture
 
