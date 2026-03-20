@@ -1,6 +1,6 @@
-# 💻 Z.bot Client — Intelligent Document Chat Interface
+# 💻 Z.bot---Client — Intelligent Document Chat Interface
 
-Z.bot Client is a **modern, responsive React-based frontend** designed to interact seamlessly with the Z.bot RAG backend.
+Z.bot (client side) is a **modern, responsive React-based frontend** designed to interact seamlessly with the Z.bot RAG backend.
 
 It provides a **real-time AI chat experience with document context**, enabling users to upload files, manage chats, and receive streamed responses — all with a clean and intuitive UI.
 
