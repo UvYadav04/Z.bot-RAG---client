@@ -101,9 +101,30 @@ function ChatBox() {
   }, [result, currentMessages]);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && current !== "")
-        streamResponse(current)
+    const handleKeyDown = (e:KeyboardEvent) => {
+      if (e.key === 'Enter' && current !== "") { 
+        if (e.shiftKey) {
+          e.preventDefault();
+
+          const target = e.target as HTMLTextAreaElement;
+          const start = target.selectionStart;
+          const end = target.selectionEnd;
+
+          const newValue =
+            current.slice(0, start) + "\n" + current.slice(end);
+
+          setCurrent(newValue);
+
+          // move cursor to correct position
+          setTimeout(() => {
+            target.selectionStart = target.selectionEnd = start + 1;
+          }, 0);
+
+        } else {
+          e.preventDefault();
+          streamResponse(current)
+        }
+      }
 
     };
 
@@ -145,12 +166,13 @@ function ChatBox() {
           </ div>
 
           < div className="border bottom-0 float-end  box-border w-full bg-white  flex gap-3 p-1 rounded-sm" >
-            <input
-              className="flex-1  px-3 py-[7.5px] outline-none text-sm"
-              type="text"
+            <textarea
+              rows={1}
+              className="flex-1  px-3 py-[7.5px] outline-none text-md whitespace-pre-wrap resize-none"
               value={current}
               onChange={(e) => setCurrent(e.target.value)}
               placeholder="Ask something..."
+              style={{scrollbarWidth:'none'}}
             />
 
             <button
