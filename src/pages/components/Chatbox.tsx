@@ -29,7 +29,6 @@ function ChatBox() {
   const messagesRef = useRef<HTMLDivElement | null>(null);
   const { currentChatId,currentUsingDocs, selectedChat, currentMessages, setCurrentMessages } = useChatContext()
   const { refetch } = useGetChatsQuery()
-  console.log(currentChatId)
 
   const streamResponse = useCallback(async (query: string) => {
     if (query === "") {
@@ -154,7 +153,6 @@ export default ChatBox
 
 
 const MessageBox = ({ message }: { message: messagesInterface }) => {
-  // console.log(message)
   const { data: userInfo } = useGetUserInfoQuery()
 
   if (!message.role || !message.content)

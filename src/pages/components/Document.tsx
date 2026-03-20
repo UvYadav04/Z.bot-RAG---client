@@ -20,13 +20,13 @@ function DocumentSection() {
     const docRef = useRef<HTMLInputElement | null>(null)
     const [uploadDocs, { isLoading }] = useUploadDocumentMutation()
     const { currentUsingDocs, setCurrentUsingDocs, } = useChatContext()
+    const [searchQuery, setSearchQuery] = useState<string>("")
 
 
     const uploadDocuments = async (files: FileList) => {
         try {
             if (!files)
                 throw new Error("Please select valid files")
-            // console.log(files)
             const formData = new FormData()
             const fileList = Array.from(files);
             setUploadingDocs(fileList);
@@ -39,9 +39,7 @@ function DocumentSection() {
 
             if (!success)
                 throw new Error(message)
-            console.log(documents)
             let ids = Array.from(documents).map((item) => item.id)
-            console.log(ids)
             setCurrentUsingDocs((prev) => {
                 const newSet = new Set(prev)
                 ids.forEach((item) => newSet.add(item))
@@ -57,8 +55,6 @@ function DocumentSection() {
     }
 
     useEffect(() => {
-        // console.log(data)
-        console.log(data)
         if (Array.isArray(data?.documents))
             setUploadedDocs(data?.documents)
         else
@@ -70,7 +66,7 @@ function DocumentSection() {
             refetch()
     }, [userData])
     return (
-        <div className="docs w-full  flex flex-col place-content-start gap-2 place-items-center h-1/2 px-0 py-1  overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
+        <div className="docs w-full  flex flex-col place-content-start gap-2 place-items-center h-[40%] px-0 py-1 " style={{ scrollbarWidth: "none" }}>
 
             <h3 className='bg-white/80 rounded-sm py-1  w-full text-center text-(--text) flex flex-row place-content-center place-items-center gap-4 group cursor-pointer' onClick={() => docRef.current?.click()}>
                 <span>Upload Document</span>
@@ -87,7 +83,8 @@ function DocumentSection() {
                     if (docFiles) uploadDocuments(docFiles);
                 }}
             />
-            <div className="docs w-full flex flex-col-reverse place-content-start place-items-center gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
+            {uploadedDocs?.length > 4 && <input className='w-full h-fit text-sm bg-white p-0.5 focus:outline-none rounded-xs px-1 ' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='search documents' />}
+            <div className="docs w-full flex-1 flex flex-col place-content-start place-items-center gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
                 {uploadingDocs?.map((item) => {
                     return <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5   " >
                         <h3 className='text-sm text-start w-full line-clamp-1'>{item.name}</h3>
@@ -97,7 +94,7 @@ function DocumentSection() {
                         />
                     </div>
                 })}
-                {uploadedDocs?.map((item) => {
+                {uploadedDocs?.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))?.map((item) => {
                     return <DocItem doc={item} currentDocs={currentUsingDocs} setCurrentDocs={setCurrentUsingDocs} />
                 })}
             </div>
@@ -109,7 +106,6 @@ export default DocumentSection
 
 
 const DocItem = ({ doc, currentDocs, setCurrentDocs }: { doc: DocsInterface, currentDocs: Set<string>, setCurrentDocs: Dispatch<SetStateAction<Set<string>>> }) => {
-    // console.log(doc)
     return (
         <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5  " >
             <h3 className='text-sm text-start w-full line-clamp-1'>{doc.name}</h3>

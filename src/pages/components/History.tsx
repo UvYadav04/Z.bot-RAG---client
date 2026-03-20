@@ -26,7 +26,6 @@ function History() {
     }
 
     useEffect(() => {
-        console.log(data)
         if (data) {
             if (data?.chats)
                 setUserChats(data?.chats)
@@ -36,7 +35,6 @@ function History() {
     }, [data])
 
     useEffect(() => {
-        console.log(chatIdInfo)
         if (chatIdInfo?.chatId)
             setCurrentChatId(chatIdInfo.chatId)
         else
@@ -45,10 +43,8 @@ function History() {
 
     useEffect(() => {
         if (userChats) {
-            console.log(selectedChat)
-            console.log(data?.chats)
             const currentChats = data?.chats?.find((item) => (item.chat_id === (selectedChat || currentChatId))) || null
-            console.log(currentChats)
+            console.log(data?.chats)
             if (currentChats)
                 setCurrentMessages(currentChats.messages)
             else
@@ -61,11 +57,11 @@ function History() {
         return null;
 
     return (
-        <div className='w-full h-2/5   pb-1   box-border flex flex-col  border-t-2 border-white'>
+        <div className='w-full h-[40%]   pb-1   box-border flex flex-col  border-t-2 border-white'>
             <div className="chatsList  w-full h-full  flex flex-col place-content-start gap-2">
 
                 <h2 className='text-white/80 text-xl'>Continue chats...</h2>
-                <div className="chatList flex flex-col-reverse gap-1 place-content-start place-items-start w-full overflow-y-scroll " style={{ scrollbarWidth: 'none' }}>
+                <div className="chatList flex flex-col gap-1 place-content-start place-items-start w-full overflow-y-scroll " style={{ scrollbarWidth: 'none' }}>
                     {userChats?.map((item) => {
                         return (
                             <div

@@ -45,7 +45,8 @@ export const chatApi = createApi({
                 method: "POST",
                 body: JSON.stringify({ chatId }),
                 credentials: 'include'
-            })
+            }),
+            invalidatesTags: ['userChat']
         }),
         queryChat: builder.mutation<queryResponse, { query: string, creativity: string, selectedChat: string, currentUsingDocs: string }>({
             query: ({ query, creativity, selectedChat, currentUsingDocs }) => ({

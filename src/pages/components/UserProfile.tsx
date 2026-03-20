@@ -11,8 +11,6 @@ function UserProfile() {
     const [login, { isLoading: loggingIn }] = useLoginMutation()
     const [logOut, { isLoading: loggingOut }] = useLogoutMutation()
 
-    // console.log(userInfo)
-
     const handleLogOut = async () => {
         try {
             const { success, message } = await logOut().unwrap()
@@ -24,7 +22,7 @@ function UserProfile() {
     }
 
     if (loggingIn || isLoading || loggingOut)
-        return <div className="w-full text-center place-content-center place-items-center googleLogin float-end mt-auto mb-0 p-1 h-fit" >
+        return <div className="w-full text-center place-content-center place-items-center googleLogin float-end mt-auto mb-0 p-1 max-h-[10%]" >
             <LoaderIcon size={25} className="animate-spin w-fit my-2 rounded-full" />
         </div>
 
