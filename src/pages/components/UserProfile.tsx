@@ -3,6 +3,7 @@ import { GoogleLogin } from "@react-oauth/google"
 import { useGetUserInfoQuery, useLoginMutation, useLogoutMutation } from "../../services/userApiSlice"
 import { Loader2Icon, LoaderIcon, LogOut } from "lucide-react"
 import { toast } from "sonner"
+import { useChatContext } from "../../context/chatContext"
 
 function UserProfile() {
 
@@ -10,12 +11,15 @@ function UserProfile() {
     const { info: userInfo } = data || {}
     const [login, { isLoading: loggingIn }] = useLoginMutation()
     const [logOut, { isLoading: loggingOut }] = useLogoutMutation()
+    const { setCurrentUsingDocs, setSelectedChat } = useChatContext()
 
     const handleLogOut = async () => {
         try {
             const { success, message } = await logOut().unwrap()
             if (!success)
                 throw new Error(message || "cant logout at the moment")
+            setCurrentUsingDocs(new Set())
+            setSelectedChat(null)
         } catch (error: any) {
             toast.error(error?.message || error?.data?.message || "cant log out at the moment")
         }
@@ -38,6 +42,8 @@ function UserProfile() {
                         }).unwrap()
                         if (!success)
                             throw new Error(message)
+                        setCurrentUsingDocs(new Set())
+                        setSelectedChat(null)
                         toast.success("Logged in successfully")
                     }}
                     onError={() => {

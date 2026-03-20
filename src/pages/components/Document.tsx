@@ -45,6 +45,7 @@ function DocumentSection() {
                 ids.forEach((item) => newSet.add(item))
                 return newSet
             })
+            setUploadingDocs(null)
         } catch (error: any) {
             toast.error(error?.message || error?.data?.message || "cant upload documents at the moment")
         }
@@ -81,6 +82,7 @@ function DocumentSection() {
                 onChange={(e) => {
                     const docFiles = e.target.files;
                     if (docFiles) uploadDocuments(docFiles);
+                    e.target.value = ""
                 }}
             />
             {uploadedDocs?.length > 4 && <input className='w-full h-fit text-sm bg-white p-0.5 focus:outline-none rounded-xs px-1 ' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='search documents' />}

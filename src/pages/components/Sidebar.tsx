@@ -57,8 +57,8 @@ function SidebarContent() {
     }
 
     return (
-        <div className='w-full h-full pt-2 px-2 flex flex-col gap-2'>
-            <div className='border-top h-0 border-white border mb-2 w-full ' />
+        <div className='w-full h-full pt-0 px-2 flex flex-col gap-2'>
+            <div className=' h-0 border-white mb-2 w-full ' />
             <button
                 className='w-full cursor-pointer py-1 max-h-[10%] rounded-sm text-(--text) bg-white/80 flex place-content-center gap-2 place-items-center'
                 onClick={handleNewChat}
