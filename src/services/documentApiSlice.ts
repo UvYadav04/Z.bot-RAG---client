@@ -22,7 +22,7 @@ export const documentApi = createApi({
                 url: URIS.GET_DOCUMENTS,
                 method: "GET",
                 credentials: 'include',
-                timeout:1000
+                timeout:10000
             }),
             providesTags: ["Documents"]
         }),
@@ -33,7 +33,6 @@ export const documentApi = createApi({
                 method: "POST",
                 body: formData,
                 credentials: 'include',
-                timeout:1000
             }),
             invalidatesTags: ["Documents"]
         }),
@@ -43,7 +42,7 @@ export const documentApi = createApi({
                 url: URIS.DELETE_DOCUMENT(documentId),
                 method: "DELETE",
                 credentials: 'include',
-                timeout:1000
+                timeout:10000
             }),
             invalidatesTags: ["Documents"]
         }),

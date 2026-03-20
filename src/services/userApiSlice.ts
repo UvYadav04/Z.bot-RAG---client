@@ -23,7 +23,7 @@ export const userApi = createApi({
             query: () => ({
                 url: URIS.USER_INFO,
                 credentials: 'include',
-                timeout: 1000
+                timeout: 10000
             }),
 
             providesTags: ["User"]
@@ -38,7 +38,7 @@ export const userApi = createApi({
                 timeout:1000
             }),
             invalidatesTags: ["User"],
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 await queryFulfilled;
                 dispatch(chatApi.util.invalidateTags(['userChat', 'chatId']));
                 dispatch(documentApi.util.invalidateTags(['Documents']))
@@ -50,10 +50,10 @@ export const userApi = createApi({
                 url: URIS.LOGOUT,
                 method: "POST",
                 credentials: 'include',
-                timeout: 1000
+                timeout: 10000
             }),
             invalidatesTags: ["User"],
-            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+            async onQueryStarted(_, { dispatch, queryFulfilled }) {
                 await queryFulfilled;
                 dispatch(chatApi.util.invalidateTags(['userChat', 'chatId']));
                 dispatch(documentApi.util.invalidateTags(['Documents']))

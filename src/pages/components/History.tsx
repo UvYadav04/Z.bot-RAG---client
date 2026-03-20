@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useGetChatIdQuery, useGetChatsQuery, useLazyNewChatQuery, useUpdateCurrentChatIdMutation } from '../../services/chatApiSlice'
+import { useEffect, useState } from 'react'
+import { useGetChatIdQuery, useGetChatsQuery, useUpdateCurrentChatIdMutation } from '../../services/chatApiSlice'
 import { useChatContext } from '../../context/chatContext'
 import { toast } from 'sonner'
-import { Loader, SquarePen } from 'lucide-react'
 import type { userChatInterface } from './Chatbox'
-import { useGetUserInfoQuery } from '../../services/userApiSlice'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import Retry from './Retry'
 

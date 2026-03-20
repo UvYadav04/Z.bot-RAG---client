@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './App.css';
 import Chat from './pages/Chat';
 import { GoogleOAuthProvider } from '@react-oauth/google';

@@ -1,11 +1,9 @@
 import { Loader, MinusCircleIcon, PlusCircleIcon, Upload } from 'lucide-react'
-import React, { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import { useGetDocumentsQuery, useUploadDocumentMutation } from '../../services/documentApiSlice';
 import { toast } from 'sonner';
 import { useChatContext } from '../../context/chatContext';
 import { useGetUserInfoQuery } from '../../services/userApiSlice';
-import { useLazyNewChatQuery } from '../../services/chatApiSlice';
-import { Button } from '../../components/ui/button';
 import Retry from './Retry';
 interface DocsInterface {
     name: string,
@@ -41,7 +39,7 @@ function DocumentSection() {
 
             if (!success)
                 throw new Error(message)
-            let ids = Array.from(documents).map((item) => item.id)
+            let ids = Array.from(documents).map((item) => item._id)
             setCurrentUsingDocs((prev) => {
                 const newSet = new Set(prev)
                 ids.forEach((item) => newSet.add(item))

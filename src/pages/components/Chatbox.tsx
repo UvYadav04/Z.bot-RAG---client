@@ -1,11 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import  { useCallback, useEffect, useRef, useState } from 'react'
 import { useChatContext } from '../../context/chatContext';
-import { useGetChatIdQuery, useGetChatsQuery, useLazyNewChatQuery, useQueryChatMutation, useUpdateCurrentChatIdMutation } from '../../services/chatApiSlice';
+import { useGetChatsQuery} from '../../services/chatApiSlice';
 import Markdown from "react-markdown"
 import { toast } from 'sonner';
 import { useGetUserInfoQuery } from '../../services/userApiSlice';
-import { SquarePen } from 'lucide-react';
-import { v4 as uuid } from "uuid"
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export interface messagesInterface {
@@ -84,6 +82,7 @@ function ChatBox() {
         setResult(prev => prev + chunk);
       }
     } catch (error) {
+      setLoading(false)
       setCurrentMessages((prev) => {
         return ([...prev, { content: "I am sorry, I couldnot generate response, please try again!!", time: Date.now().toString(), role: "assistant" }])
       })
@@ -140,10 +139,10 @@ function ChatBox() {
   return (
     <div className="chatPage h-full w-full flex place-content-center place-items-center ">
       <div className='md:w-4/6 w-full h-screen   pb-1   box-border flex flex-col  px-2 '>
-        <div className="w-full h-full flex flex-col place-items-center place-content-start gap-3 relative">
+        <div className="w-full h-full flex flex-col place-items-center place-content-start gap-3 relative ">
           < div
             ref={messagesRef}
-            className="flex-1 flex flex-col overflow-y-scroll w-full h-full p-6  gap-4"
+            className="flex-1 flex flex-col overflow-y-scroll w-full h-full p-6 px-0  gap-4"
             style={{ scrollbarWidth: "none" }}
           >
 
@@ -168,7 +167,7 @@ function ChatBox() {
           < div className="border bottom-0 float-end  box-border w-full bg-white  flex gap-3 p-1 rounded-sm" >
             <textarea
               rows={1}
-              className="flex-1  px-3 py-[7.5px] outline-none text-md whitespace-pre-wrap resize-none"
+              className="flex-1  px-3 py-[4px] outline-none text-md whitespace-pre-wrap resize-none"
               value={current}
               onChange={(e) => setCurrent(e.target.value)}
               placeholder="Ask something..."
@@ -198,7 +197,7 @@ const MessageBox = ({ message }: { message: messagesInterface }) => {
   if (!message.role || !message.content)
     return null
   return (
-    <div className={`flex w-fit max-w-full  ${(message.role === "zensky") || (message.role === "assistant") ? "place-content-end   flex-row-reverse  ml-auto" : "place-content-start  mr-auto "} place-items-end gap-1 h-fit`}>
+    <div className={`flex w-fit max-w-full  ${(message.role === "zensky") || (message.role === "assistant") ? "place-content-end   flex-row-reverse  ml-auto" : "place-content-start  mr-auto "} place-items-end gap-1 h-fit `}>
       <div className="size-8 rounded-full bg-white flex place-content-center place-items-center">
         {message.role === "user" ? (userInfo?.info?.name ? userInfo.info.name.charAt(0) : "U") : "Z"}
       </div>

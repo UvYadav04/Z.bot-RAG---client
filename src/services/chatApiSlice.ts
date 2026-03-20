@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { URIS } from "../lib/constants"
 import type { BaseResponse } from "./userApiSlice"
-import type { messagesInterface, userChatInterface } from "../pages/components/Chatbox"
+import type { userChatInterface } from "../pages/components/Chatbox"
 
 interface ChatResponse extends BaseResponse {
     chats: userChatInterface[]
@@ -28,7 +28,7 @@ export const chatApi = createApi({
                 url: URIS.GET_CHAT_ID,
                 method: "GET",
                 credentials: 'include',
-                timeout: 1000,
+                timeout: 10000,
             }),
             providesTags:["chatId"]
         }),
@@ -37,7 +37,7 @@ export const chatApi = createApi({
                 url: URIS.GET_USER_CHATS,
                 method: "GET",
                 credentials: 'include',
-                timeout: 1000
+                timeout: 10000
             }),
             providesTags:["userChat"]
         }),
@@ -47,7 +47,7 @@ export const chatApi = createApi({
                 method: "POST",
                 body: JSON.stringify({ chatId }),
                 credentials: 'include',
-                timeout: 1000
+                timeout: 10000
 
             }),
             invalidatesTags: ['userChat']
@@ -58,7 +58,7 @@ export const chatApi = createApi({
                 method: "POST",
                 body: JSON.stringify({ query, creativity: creativity, "selected_chat_id": selectedChat, "document_ids": Array.from(currentUsingDocs) }),
                 credentials: 'include',
-                timeout: 1000
+                timeout: 10000
             })
         }),
         newChat: builder.query<ChatIdResponse, void>({
@@ -66,7 +66,7 @@ export const chatApi = createApi({
                 url: URIS.NEW_CHAT,
                 method: "GET",
                 credentials: 'include',
-                timeout: 1000
+                timeout: 10000
             })
         })
     })

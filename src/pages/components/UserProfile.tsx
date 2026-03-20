@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode"
 import { GoogleLogin } from "@react-oauth/google"
 import { useGetUserInfoQuery, useLoginMutation, useLogoutMutation } from "../../services/userApiSlice"
-import { Loader2Icon, LoaderIcon, LogOut, RotateCcw } from "lucide-react"
+import { LoaderIcon, LogOut, RotateCcw } from "lucide-react"
 import { toast } from "sonner"
 import { useChatContext } from "../../context/chatContext"
 import { Button } from "../../components/ui/button"
