@@ -19,7 +19,7 @@ function Sidebar() {
                         </Button>
                     </SheetTrigger>
 
-                    <SheetContent side="left" style={{ background:'url(public/background.jpg)'}} className="w-44 p-0 bg-slate-600">
+                    <SheetContent side="left" style={{ background:'url(background.jpg)'}} className="w-44 p-0 bg-slate-600">
                         <SidebarContent />
                     </SheetContent>
                 </Sheet>

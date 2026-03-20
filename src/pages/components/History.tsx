@@ -61,12 +61,12 @@ function History() {
             {(gettingChats || (errorGettingChats && fetchingChats)) && <div className='lg:size-32 size-20 my-auto'>
                 <DotLottieReact
                     // src="public/robo.lottie"
-                    src="public/Robot-Bot 3D.lottie"
+                    src="Robot-Bot 3D.lottie"
                     loop
                     autoplay
                 />
             </div>}
-            {(errorGettingChats && !gettingChats && !fetchingChats) && <Retry message='Failed to load chats' retry={refetch} />}
+            {(errorGettingChats && !gettingChats && !fetchingChats) && <Retry message='Failed to load chats' className='mt-2' retry={refetch} />}
             {
                 (!gettingChats && !errorGettingChats) && <div className="chatsList  w-full h-full  flex flex-col place-content-start gap-2 pt-1">
 

@@ -10,6 +10,7 @@ interface DocsInterface {
     _id: string,
     date?: string
 }
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 function DocumentSection() {
 
@@ -27,6 +28,10 @@ function DocumentSection() {
         try {
             if (!files)
                 throw new Error("Please select valid files")
+            for (let file of files) {
+                if (file.size > MAX_FILE_SIZE)
+                    throw new Error("Any file should not exceed 5mb size.")
+            }
             const formData = new FormData()
             const fileList = Array.from(files);
             setUploadingDocs(fileList);

@@ -150,7 +150,7 @@ function ChatBox() {
               currentMessages.length === 0 && <div className="h-full w-full flex place-content-center place-items-center">
                 <div className="w-[70%] h-auto">
                   <DotLottieReact
-                    src="public/Ai Robot Animation.lottie"
+                    src="Ai Robot Animation.lottie"
                     loop
                     autoplay
                   />
