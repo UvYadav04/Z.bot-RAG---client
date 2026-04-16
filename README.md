@@ -163,7 +163,7 @@ UI Updates in Real-Time
 ### 1. Clone the repository
 
 ```bash id="3h20di"
-git clone https://github.com/your-username/Z.bot-RAG---client
+git clone https://github.com/UvYadav04/Z.bot-RAG---client
 cd Z.bot-RAG---client
 ```
 
