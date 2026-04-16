@@ -13,6 +13,7 @@ function History() {
     const [userChats, setUserChats] = useState<userChatInterface[]>([])
     const { data, isLoading: gettingChats, isFetching: fetchingChats, error: errorGettingChats, refetch } = useGetChatsQuery()
     const { data: chatIdInfo } = useGetChatIdQuery()
+    
 
 
     const handleSetChatId = async (id: string) => {
@@ -53,54 +54,85 @@ function History() {
         }
     }, [selectedChat, currentChatId, userChats])
 
+    console.log(userChats)
+
     if (!userChats || userChats?.length === 0)
         return null;
 
+
     return (
-        <div className='w-full h-[40%]   pb-1   box-border flex flex-col place-content-start place-items-center border-t-2 border-white'>
-            {(gettingChats || (errorGettingChats && fetchingChats)) && <div className='lg:size-32 size-20 my-auto'>
-                <DotLottieReact
-                    // src="public/robo.lottie"
-                    src="Robot-Bot 3D.lottie"
-                    loop
-                    autoplay
-                />
-            </div>}
-            {(errorGettingChats && !gettingChats && !fetchingChats) && <Retry message='Failed to load chats' className='mt-2' retry={refetch} />}
-            {
-                (!gettingChats && !errorGettingChats) && <div className="chatsList  w-full h-full  flex flex-col place-content-start gap-2 pt-1">
+        <div className="w-full flex flex-col gap-3 min-h-0 flex-1 border-t border-border pt-3">
 
-                    <h2 className='text-white/80 text-xl font-semibold -mb-1 bg-slate-100/10 px-1 font-mono rounded-sm'>Continue Chats</h2>
-                    <div className="chatList flex flex-col gap-1 place-content-start place-items-start w-full overflow-y-scroll " style={{ scrollbarWidth: 'none' }}>
-                        {userChats?.map((item) => {
-                            return (
-                                <div
-                                    onClick={() => handleSetChatId(item.chat_id)}
-                                    className={`relative ${item.chat_id === (selectedChat || currentChatId) ? "bg-white/40" : "bg-white/80"} w-full flex place-content-start  rounded-xs box-border px-2 cursor-pointer text-(--text) h-6`}
-                                >
-                                    <h3 className="w-full min-w-0 overflow-hidden truncate max-w-full text-sm">
-                                        {item.name || item._id}
-                                    </h3>
+            {/* Header */}
+            <h2 className="text-sm font-semibold text-muted-foreground px-1">
+                Continue Chats
+            </h2>
 
-                                    {item.createdAt && (
-                                        <h6 className="w-fit absolute text-[9px] -bottom-[9px] right-1">
-                                            {(() => {
-                                                const itemTime = new Date(item.createdAt)
-                                                const todayDate = (new Date()).getDate()
-                                                if (itemTime.getDate() === todayDate)
-                                                    return itemTime.toLocaleTimeString()
-                                                return itemTime.toDateString()
-                                            })()}
-                                        </h6>
-                                    )}
-                                </div>
-                            );
-                        })}
+            {/* Loading */}
+            {(gettingChats || (errorGettingChats && fetchingChats)) && (
+                <div className="flex-1 flex items-center justify-center opacity-80">
+                    <div className="w-20">
+                        <DotLottieReact
+                            src="Robot-Bot 3D.lottie"
+                            loop
+                            autoplay
+                        />
                     </div>
                 </div>
-            }
+            )}
+
+            {/* Error */}
+            {(errorGettingChats && !gettingChats && !fetchingChats) && (
+                <Retry message="Failed to load chats" className="mt-2" retry={refetch} />
+            )}
+
+            {/* Chat List */}
+            {!gettingChats && !errorGettingChats && (
+                <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-1 pr-1" style={{scrollbarWidth:"none"}}>
+
+                    {userChats?.map((item) => {
+                        const isActive = item.chat_id === (selectedChat || currentChatId)
+
+                        return (
+                            <div
+                                key={item.chat_id}
+                                onClick={() => handleSetChatId(item.chat_id)}
+                                className={`group relative flex flex-col px-3 py-2 pb-1 rounded-xs cursor-pointer transition-all border
+                ${isActive
+                                        ? "bg-orange-500/10 border-orange-500/30"
+                                        : "bg-background hover:bg-muted border-transparent"
+                                    }
+              `}
+                            >
+                                {/* Title */}
+                                <p className="text-xs truncate">
+                                    {item.name || item._id}
+                                </p>
+
+                                {/* Time */}
+                                {item.createdAt && (
+                                    <span className="text-[8px] text-muted-foreground mt-1 absolute right-1 -bottom-2">
+                                        {(() => {
+                                            const itemTime = new Date(item.createdAt)
+                                            const today = new Date()
+
+                                            if (
+                                                itemTime.toDateString() === today.toDateString()
+                                            ) {
+                                                return itemTime.toLocaleTimeString()
+                                            }
+                                            return itemTime.toDateString()
+                                        })()}
+                                    </span>
+                                )}
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
         </div>
     )
+
 }
 
 export default History

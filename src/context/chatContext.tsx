@@ -4,8 +4,8 @@ import type { messagesInterface } from "../pages/components/Chatbox"
 interface chatContextInterface {
     currentChatId: string,
     setCurrentChatId: Dispatch<SetStateAction<string>>,
-    currentUsingDocs: Set<string>,
-    setCurrentUsingDocs: Dispatch<SetStateAction<Set<string>>>,
+    currentUsingDocs: string | undefined,
+    setCurrentUsingDocs: Dispatch<SetStateAction<string | undefined>>,
     selectedChat: string | null,
     setSelectedChat: Dispatch<SetStateAction<string | null>>
     currentMessages: messagesInterface[],
@@ -15,7 +15,7 @@ interface chatContextInterface {
 const ChatContext = React.createContext<chatContextInterface | null>(null)
 
 export const ChatContextProvider = ({ children }: { children: React.ReactNode }) => {
-    const [currentUsingDocs, setCurrentUsingDocs] = useState<Set<string>>(new Set())
+    const [currentUsingDocs, setCurrentUsingDocs] = useState<string | undefined>(undefined)
     const [currentChatId, setCurrentChatId] = useState<string>("")
     const [selectedChat, setSelectedChat] = useState<string | null>(null)
     const [currentMessages, setCurrentMessages] = useState<messagesInterface[]>([])

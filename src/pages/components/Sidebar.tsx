@@ -10,8 +10,8 @@ import { Button } from "../../components/ui/button"
 function Sidebar() {
     return (
         <>
-            {/* ✅ Mobile Navbar */}
-            <div className=" lg:hidden flex place-content-start  place-items-center p-2">
+            {/* Mobile */}
+            <div className="lg:hidden flex items-center p-2 fixed top-2 left-2 ">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline" size="icon">
@@ -19,16 +19,16 @@ function Sidebar() {
                         </Button>
                     </SheetTrigger>
 
-                    <SheetContent side="left" style={{ background:'url(background.jpg)'}} className="w-44 p-0 bg-slate-600">
+                    <SheetContent
+                        side="left"
+                        className="w-72 p-0 bg-background/95 backdrop-blur border-r border-border"
+                    >
                         <SidebarContent />
                     </SheetContent>
                 </Sheet>
-
-                {/* <h2 className="ml-3 font-semibold">Z.bot</h2> */}
             </div>
 
-            {/* ✅ Desktop Sidebar */}
-            <div className="lg:flex hidden  w-1/4 h-screen">
+            <div className=" hidden lg:flex h-full w-72 ">
                 <SidebarContent />
             </div>
         </>
@@ -57,18 +57,30 @@ function SidebarContent() {
     }
 
     return (
-        <div className='w-full h-full pt-0  bg-radial-[at_15%_50%] from-slate-100/40 to-transparent to-65% px-2 flex flex-col gap-2'>
-            <div className=' h-0 border-white mb-2 w-full ' />
+        <div className="h-full flex w-full flex-col p-3 gap-2 bg-background/80 backdrop-blur ">
+
+            {/* New Chat Button */}
             <button
-                className='w-full cursor-pointer py-1 max-h-[10%] rounded-sm text-(--text) bg-white/80 flex place-content-center gap-2 place-items-center'
                 onClick={handleNewChat}
+                className="flex items-center justify-center gap-2 px-3 py-[8px] rounded-sm
+        bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium 
+        transition-all shadow-sm hover:shadow-md"
             >
-                <h4>New Chat</h4>
-                <SquarePen size={20} />
+                <SquarePen size={18} />
+                New Chat
             </button>
 
-            <DocumentSection />
-            <History />
+            {/* Documents */}
+            <div className="flex flex-col min-h-0">
+                <DocumentSection />
+            </div>
+
+            {/* History */}
+            <div className="flex flex-col min-h-0 flex-1">
+                <History />
+            </div>
+
+            {/* User */}
             <UserProfile />
         </div>
     )

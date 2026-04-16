@@ -40,16 +40,10 @@ function DocumentSection() {
                 formData.append("files", file);
             });
 
-            const { documents, success, message } = await uploadDocs({ formData }).unwrap();
+            const { success, message } = await uploadDocs({ formData }).unwrap();
 
             if (!success)
                 throw new Error(message)
-            let ids = Array.from(documents).map((item) => item._id)
-            setCurrentUsingDocs((prev) => {
-                const newSet = new Set(prev)
-                ids.forEach((item) => newSet.add(item))
-                return newSet
-            })
             setUploadingDocs(null)
         } catch (error: any) {
             toast.error(error?.message || error?.data?.message || "cant upload documents at the moment")
@@ -71,13 +65,22 @@ function DocumentSection() {
         if (userData?.info)
             refetch()
     }, [userData])
-    return (
-        <div className="docs w-full  flex flex-col place-content-start gap-2 place-items-center h-[40%] px-0 py-1 " style={{ scrollbarWidth: "none" }}>
+    // UI FIXED VERSION
 
-            <h3 className='bg-white/80 rounded-sm py-1  w-full text-center text-(--text) flex flex-row place-content-center place-items-center gap-4 group cursor-pointer' onClick={() => docRef.current?.click()}>
-                <span>Upload Document</span>
-                <span className='w-fit float-right '><Upload size={20} className='w-fit ' /></span>
-            </h3>
+    return (
+        <div className="w-full h-full flex flex-col gap-3 min-h-0">
+
+            {/* Upload Button */}
+            <button
+                onClick={() => docRef.current?.click()}
+                className="w-full flex items-center justify-center gap-2 px-3 py-[8px] rounded-sm 
+      bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium 
+      transition-all shadow-sm hover:shadow-md"
+            >
+                <Upload size={18} />
+                Upload Document
+            </button>
+
             <input
                 multiple
                 className="hidden"
@@ -87,25 +90,62 @@ function DocumentSection() {
                 onChange={(e) => {
                     const docFiles = e.target.files;
                     if (docFiles) uploadDocuments(docFiles);
-                    e.target.value = ""
+                    e.target.value = "";
                 }}
             />
-            {(errorGettingDocs && !gettingDocuments && !fetchingDocuments) && <Retry message='Failed to fetch documents' retry={refetch} />}
-            {(gettingDocuments || (errorGettingDocs && fetchingDocuments)) && <Loader className='animate-spin' />}
-            {((!gettingDocuments && !errorGettingDocs) && uploadedDocs?.length > 4) && <input className='w-full h-fit text-sm bg-white p-0.5 focus:outline-none rounded-xs px-1 ' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder='search documents' />}
-            <div className="docs w-full flex-1 flex flex-col place-content-start place-items-center gap-1 h-full overflow-y-scroll" style={{ scrollbarWidth: "none" }}>
-                {uploadingDocs?.map((item) => {
-                    return <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5   " >
-                        <h3 className='text-sm text-start w-full line-clamp-1'>{item.name}</h3>
-                        <Loader
-                            className="animate-spin w-fit"
-                            size={20}
-                        />
+
+            {/* Search */}
+            {uploadedDocs?.length > 4 && (
+                <input
+                    className="w-full px-3 py-2 text-sm rounded-md border border-border bg-background 
+        focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search documents..."
+                />
+            )}
+
+            {/* Content */}
+            <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-2 pr-1">
+
+                {/* loading */}
+                {(gettingDocuments || fetchingDocuments) && (
+                    <div className="flex justify-center py-4">
+                        <Loader className="animate-spin text-orange-500" />
                     </div>
-                })}
-                {!(gettingDocuments || fetchingDocuments) && !errorGettingDocs && uploadedDocs?.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))?.map((item) => {
-                    return <DocItem doc={item} currentDocs={currentUsingDocs} setCurrentDocs={setCurrentUsingDocs} />
-                })}
+                )}
+
+                {/* error */}
+                {(errorGettingDocs && !gettingDocuments && !fetchingDocuments) && (
+                    <Retry message="Failed to fetch documents" retry={refetch} />
+                )}
+
+                {/* uploading */}
+                {uploadingDocs?.map((item, i) => (
+                    <div
+                        key={i}
+                        className="flex items-center gap-2 px-3 py-2 rounded-md bg-muted/50"
+                    >
+                        <p className="text-sm truncate flex-1">{item.name}</p>
+                        <Loader className="animate-spin text-orange-500" size={16} />
+                    </div>
+                ))}
+
+                {/* docs list */}
+                {!gettingDocuments &&
+                    !errorGettingDocs &&
+                    uploadedDocs
+                        ?.filter((item) =>
+                            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+                        )
+                        ?.map((item) => (
+                            <DocItem
+                                key={item._id}
+                                doc={item}
+                                currentDocs={currentUsingDocs}
+                                setCurrentDocs={setCurrentUsingDocs}
+                            />
+                        ))}
             </div>
         </div>
     )
@@ -114,37 +154,30 @@ function DocumentSection() {
 export default DocumentSection
 
 
-const DocItem = ({ doc, currentDocs, setCurrentDocs }: { doc: DocsInterface, currentDocs: Set<string>, setCurrentDocs: Dispatch<SetStateAction<Set<string>>> }) => {
+const DocItem = ({ doc, currentDocs, setCurrentDocs }: { doc: DocsInterface, currentDocs: string | undefined, setCurrentDocs: Dispatch<SetStateAction<string | undefined>> }) => {
     return (
-        <div className="document flex gap-1 place-content-start place-items-center w-full bg-white/50 rounded-xs px-2 py-0.5  " >
-            <h3 className='text-sm text-start w-full line-clamp-1'>{doc.name}</h3>
-            <div className="icon" title={currentDocs.has(doc._id) ? "Remove from Context" : "Add to Context"}>
-                {currentDocs.has(doc._id) ? (
-                    <MinusCircleIcon
-                        className="cursor-pointer "
-                        onClick={() =>
-                            setCurrentDocs((prev) => {
-                                const newSet = new Set(prev)
-                                newSet.delete(doc._id)
-                                return newSet
-                            })
-                        }
-                        size={20}
-                    />
-                ) : (
-                    <PlusCircleIcon
-                        className="cursor-pointer"
-                        onClick={() =>
-                            setCurrentDocs((prev) => {
-                                const newSet = new Set(prev)
-                                newSet.add(doc._id)
-                                return newSet
-                            })
-                        }
-                        size={20}
-                    />
-                )}
-            </div>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-xs 
+  bg-background hover:bg-muted transition-all border border-transparent hover:border-border">
+
+            <p className="text-sm truncate flex-1">
+                {doc.name}
+            </p>
+
+            {currentDocs === doc._id ? (
+                <MinusCircleIcon
+                    className="cursor-pointer text-orange-500 hover:scale-110 transition-all"
+                    size={18}
+                    onClick={() => setCurrentDocs(undefined)}
+                />
+            ) : (
+                <PlusCircleIcon
+                    className="cursor-pointer text-muted-foreground hover:text-orange-500 hover:scale-110 transition-all"
+                    size={18}
+                    onClick={() =>
+                        setCurrentDocs(doc._id)
+                    }
+                />
+            )}
         </div>
     )
 }
