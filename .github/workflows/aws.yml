@@ -26,10 +26,10 @@ jobs:
 
       - name: Clean Nginx directory
         uses: appleboy/ssh-action@v1.0.3
-       with:
-          host: 16.171.174.110
-          username: "ubuntu"
-          key: "-----BEGIN RSA PRIVATE KEY-----
+        with:
+           host: 16.171.174.110
+           username: "ubuntu"
+           key: "-----BEGIN RSA PRIVATE KEY-----
                 MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
                 /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
                 dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
@@ -56,9 +56,9 @@ jobs:
                 YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
                 SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
                 -----END RSA PRIVATE KEY-----"
-          script: |
-            echo "🧹 Cleaning old build..."
-            sudo rm -rf /var/www/frontend/*
+           script: |
+             echo "🧹 Cleaning old build..."
+             sudo rm -rf /var/www/frontend/*
 
       - name: Upload build files
         uses: appleboy/scp-action@v0.1.7
