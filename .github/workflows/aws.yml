@@ -29,106 +29,28 @@ jobs:
       - name: Clean Nginx directory
         uses: appleboy/ssh-action@v1.0.3
         with:
-           host: 16.171.174.110
-           username: "ubuntu"
-           key: -----BEGIN RSA PRIVATE KEY-----
-                MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
-                /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
-                dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
-                QwEMdnhQuLOjJ3q/ime/lgXqk+Ke0rfed/edJ12CIv/8d6jhDuqF3rB5eUgJaeld
-                vPybrW7Yn+R2VNUqWB6WTQkYWg95tP31ePSkrjgNsPZRMlFYGaxMDl3Sj0MouJwB
-                LOMnDEN51XlJZpI1pL7QUkdbkGbSmCeIdsgmOQIDAQABAoIBAQCksaoumqnhRgHg
-                ogfBvHDB06HpC5wmmhEaAl/ACcX8+ggABOPhsz0skM+hjrHL2MFESpQ/DfZek1FQ
-                BU3kxEXXckwS8EO86ohI7KbvcrzJw28uQwaY1AiYn/hEzwlZxkC3cInXbCdM+wdu
-                3rNcXIq4/XWfBm+RPLEOYOblAKFafERG9Q3rPTN9TXmZfmXkLdU95gjml8YSJDvD
-                PpSxfQNnbj+KEVSbvKadriQxKGhy/LfiUEU3HLvGghew67ZSnyPS/COC+InPhdCS
-                qeltq0ZD9mnJLg2J6IptJ/Z1nQiZ0iZAQdrO0ydAWWnkkIVGQHKLBK2opzcMzix6
-                wjKLx1P1AoGBANlvWvN7R9tfL9/FUQz83Egsy1aU3yKH80N4/gIUV1++C0+CdVdt
-                dBVv3vRMykk8R4O2guQFBY8rn/RvGL2njL5KmkSGFKPtSMQ6YlzJvNqzFM3FrOhr
-                tKjFKWpI7PY64meuuPgd428UYHEeB5bD6edfK0/+nfF85WB4KlXqowiLAoGBAMH8
-                0fXOZMZ1iGrLxGkZSeoG+P74Vy18t/KaM1FC4hR2jvEQT5Ah7wnpSKQjjvNuMYr/
-                7WRrVgSivH8NHY4QdGs/TpudogvzslA7c3Nbs0cSF/37vU5H2zyXtpSbuffTbGcy
-                ASkrtMj9Le1flQSFhYLOprytsglIRsmnScpSLSDLAoGBAM7O6VT4huoSaTiPNn4B
-                64sCgAzD4E+5uxkL9Z0It+oqmhtv3CfhxS22j/sRJr3thZ+zcl9qn1UDi0o0ePW6
-                bVV5I63VUcBxKmrplTDn+KaS+lCVmdYey2BS1wdugWPZsgon12q3EuFOIkS06Ubu
-                5ITashmN9bAAuTK+WJYLbDHtAoGACh09cTx+op5UK4VOS1CHOw18BAc8vGFpUdva
-                Wx1KnliEIWuBSnmKdhDUucIk3Opc6OtpHDhAduNpQpKTfOm8uC7H0XNJlKfzHx3K
-                ajRYx5bY62QpvaAffSxH172614INf9/qkZP2zBfvQhYeteqkSGqv5NyFkNhU4IS5
-                YzQfqDsCgYBzqwgFMlR0uGjW2pz/A7X/upBRYKe0X9Moe9lt1EGpSvXXLEKxYTWs
-                YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
-                SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
-                -----END RSA PRIVATE KEY-----
-           script: |
-             echo "🧹 Cleaning old build..."
-             sudo rm -rf /var/www/frontend/*
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "🧹 Cleaning old build..."
+            sudo rm -rf /var/www/frontend/*
 
       - name: Upload build files
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: 16.171.174.110
-          username: "ubuntu"
-          key: -----BEGIN RSA PRIVATE KEY-----
-                MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
-                /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
-                dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
-                QwEMdnhQuLOjJ3q/ime/lgXqk+Ke0rfed/edJ12CIv/8d6jhDuqF3rB5eUgJaeld
-                vPybrW7Yn+R2VNUqWB6WTQkYWg95tP31ePSkrjgNsPZRMlFYGaxMDl3Sj0MouJwB
-                LOMnDEN51XlJZpI1pL7QUkdbkGbSmCeIdsgmOQIDAQABAoIBAQCksaoumqnhRgHg
-                ogfBvHDB06HpC5wmmhEaAl/ACcX8+ggABOPhsz0skM+hjrHL2MFESpQ/DfZek1FQ
-                BU3kxEXXckwS8EO86ohI7KbvcrzJw28uQwaY1AiYn/hEzwlZxkC3cInXbCdM+wdu
-                3rNcXIq4/XWfBm+RPLEOYOblAKFafERG9Q3rPTN9TXmZfmXkLdU95gjml8YSJDvD
-                PpSxfQNnbj+KEVSbvKadriQxKGhy/LfiUEU3HLvGghew67ZSnyPS/COC+InPhdCS
-                qeltq0ZD9mnJLg2J6IptJ/Z1nQiZ0iZAQdrO0ydAWWnkkIVGQHKLBK2opzcMzix6
-                wjKLx1P1AoGBANlvWvN7R9tfL9/FUQz83Egsy1aU3yKH80N4/gIUV1++C0+CdVdt
-                dBVv3vRMykk8R4O2guQFBY8rn/RvGL2njL5KmkSGFKPtSMQ6YlzJvNqzFM3FrOhr
-                tKjFKWpI7PY64meuuPgd428UYHEeB5bD6edfK0/+nfF85WB4KlXqowiLAoGBAMH8
-                0fXOZMZ1iGrLxGkZSeoG+P74Vy18t/KaM1FC4hR2jvEQT5Ah7wnpSKQjjvNuMYr/
-                7WRrVgSivH8NHY4QdGs/TpudogvzslA7c3Nbs0cSF/37vU5H2zyXtpSbuffTbGcy
-                ASkrtMj9Le1flQSFhYLOprytsglIRsmnScpSLSDLAoGBAM7O6VT4huoSaTiPNn4B
-                64sCgAzD4E+5uxkL9Z0It+oqmhtv3CfhxS22j/sRJr3thZ+zcl9qn1UDi0o0ePW6
-                bVV5I63VUcBxKmrplTDn+KaS+lCVmdYey2BS1wdugWPZsgon12q3EuFOIkS06Ubu
-                5ITashmN9bAAuTK+WJYLbDHtAoGACh09cTx+op5UK4VOS1CHOw18BAc8vGFpUdva
-                Wx1KnliEIWuBSnmKdhDUucIk3Opc6OtpHDhAduNpQpKTfOm8uC7H0XNJlKfzHx3K
-                ajRYx5bY62QpvaAffSxH172614INf9/qkZP2zBfvQhYeteqkSGqv5NyFkNhU4IS5
-                YzQfqDsCgYBzqwgFMlR0uGjW2pz/A7X/upBRYKe0X9Moe9lt1EGpSvXXLEKxYTWs
-                YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
-                SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
-                -----END RSA PRIVATE KEY-----
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           source: "dist/*"
           target: "/var/www/frontend"
 
       - name: Fix permissions
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: 16.171.174.110
-          username: "ubuntu"
-          key: -----BEGIN RSA PRIVATE KEY-----
-                MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
-                /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
-                dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
-                QwEMdnhQuLOjJ3q/ime/lgXqk+Ke0rfed/edJ12CIv/8d6jhDuqF3rB5eUgJaeld
-                vPybrW7Yn+R2VNUqWB6WTQkYWg95tP31ePSkrjgNsPZRMlFYGaxMDl3Sj0MouJwB
-                LOMnDEN51XlJZpI1pL7QUkdbkGbSmCeIdsgmOQIDAQABAoIBAQCksaoumqnhRgHg
-                ogfBvHDB06HpC5wmmhEaAl/ACcX8+ggABOPhsz0skM+hjrHL2MFESpQ/DfZek1FQ
-                BU3kxEXXckwS8EO86ohI7KbvcrzJw28uQwaY1AiYn/hEzwlZxkC3cInXbCdM+wdu
-                3rNcXIq4/XWfBm+RPLEOYOblAKFafERG9Q3rPTN9TXmZfmXkLdU95gjml8YSJDvD
-                PpSxfQNnbj+KEVSbvKadriQxKGhy/LfiUEU3HLvGghew67ZSnyPS/COC+InPhdCS
-                qeltq0ZD9mnJLg2J6IptJ/Z1nQiZ0iZAQdrO0ydAWWnkkIVGQHKLBK2opzcMzix6
-                wjKLx1P1AoGBANlvWvN7R9tfL9/FUQz83Egsy1aU3yKH80N4/gIUV1++C0+CdVdt
-                dBVv3vRMykk8R4O2guQFBY8rn/RvGL2njL5KmkSGFKPtSMQ6YlzJvNqzFM3FrOhr
-                tKjFKWpI7PY64meuuPgd428UYHEeB5bD6edfK0/+nfF85WB4KlXqowiLAoGBAMH8
-                0fXOZMZ1iGrLxGkZSeoG+P74Vy18t/KaM1FC4hR2jvEQT5Ah7wnpSKQjjvNuMYr/
-                7WRrVgSivH8NHY4QdGs/TpudogvzslA7c3Nbs0cSF/37vU5H2zyXtpSbuffTbGcy
-                ASkrtMj9Le1flQSFhYLOprytsglIRsmnScpSLSDLAoGBAM7O6VT4huoSaTiPNn4B
-                64sCgAzD4E+5uxkL9Z0It+oqmhtv3CfhxS22j/sRJr3thZ+zcl9qn1UDi0o0ePW6
-                bVV5I63VUcBxKmrplTDn+KaS+lCVmdYey2BS1wdugWPZsgon12q3EuFOIkS06Ubu
-                5ITashmN9bAAuTK+WJYLbDHtAoGACh09cTx+op5UK4VOS1CHOw18BAc8vGFpUdva
-                Wx1KnliEIWuBSnmKdhDUucIk3Opc6OtpHDhAduNpQpKTfOm8uC7H0XNJlKfzHx3K
-                ajRYx5bY62QpvaAffSxH172614INf9/qkZP2zBfvQhYeteqkSGqv5NyFkNhU4IS5
-                YzQfqDsCgYBzqwgFMlR0uGjW2pz/A7X/upBRYKe0X9Moe9lt1EGpSvXXLEKxYTWs
-                YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
-                SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
-                -----END RSA PRIVATE KEY-----
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "🔐 Fixing permissions..."
             sudo chown -R www-data:www-data /var/www/frontend
