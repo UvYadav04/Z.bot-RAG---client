@@ -10,25 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # 4️⃣ Build project
       - name: Build project
         run: npm run build
 
-      # 5️⃣ Clean Nginx directory FIRST
       - name: Clean Nginx directory
         uses: appleboy/ssh-action@v1.0.3
        with:
@@ -65,7 +60,6 @@ jobs:
             echo "🧹 Cleaning old build..."
             sudo rm -rf /var/www/frontend/*
 
-      # 6️⃣ Upload build to Nginx directory
       - name: Upload build files
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -101,7 +95,6 @@ jobs:
           source: "dist/*"
           target: "/var/www/frontend"
 
-      # 7️⃣ Fix permissions (IMPORTANT)
       - name: Fix permissions
         uses: appleboy/ssh-action@v1.0.3
         with:
