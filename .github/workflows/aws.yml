@@ -31,7 +31,7 @@ jobs:
         with:
            host: 16.171.174.110
            username: "ubuntu"
-           key: "-----BEGIN RSA PRIVATE KEY-----
+           key: -----BEGIN RSA PRIVATE KEY-----
                 MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
                 /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
                 dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
@@ -57,7 +57,7 @@ jobs:
                 YzQfqDsCgYBzqwgFMlR0uGjW2pz/A7X/upBRYKe0X9Moe9lt1EGpSvXXLEKxYTWs
                 YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
                 SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
-                -----END RSA PRIVATE KEY-----"
+                -----END RSA PRIVATE KEY-----
            script: |
              echo "🧹 Cleaning old build..."
              sudo rm -rf /var/www/frontend/*
@@ -67,7 +67,7 @@ jobs:
         with:
           host: 16.171.174.110
           username: "ubuntu"
-          key: "-----BEGIN RSA PRIVATE KEY-----
+          key: -----BEGIN RSA PRIVATE KEY-----
                 MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
                 /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
                 dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
@@ -93,7 +93,7 @@ jobs:
                 YzQfqDsCgYBzqwgFMlR0uGjW2pz/A7X/upBRYKe0X9Moe9lt1EGpSvXXLEKxYTWs
                 YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
                 SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
-                -----END RSA PRIVATE KEY-----"
+                -----END RSA PRIVATE KEY-----
           source: "dist/*"
           target: "/var/www/frontend"
 
@@ -102,7 +102,7 @@ jobs:
         with:
           host: 16.171.174.110
           username: "ubuntu"
-          key: "-----BEGIN RSA PRIVATE KEY-----
+          key: -----BEGIN RSA PRIVATE KEY-----
                 MIIEpAIBAAKCAQEApMOvg8e+jQjDEzbvLv4nTGly28qzkya8yfzHa3HbCNnz9sfq
                 /F+8+Lw4DEee6E0NPXFTfXBwSGFSJwC6/crvAu1ykFGPR0rKFsVWrD3WwiazBpPm
                 dSj8v1C+aNxdZqluXFT+Psadq8NyBuzdNmSjsswKIY2YhsJ4zc+qLNpBYARaeYyn
@@ -128,7 +128,7 @@ jobs:
                 YzQfqDsCgYBzqwgFMlR0uGjW2pz/A7X/upBRYKe0X9Moe9lt1EGpSvXXLEKxYTWs
                 YBJAdUkiMU3aKV0AkgZi261Witxm4aYXuiBZJDg17Qecjkp9eINKjYihJg5n/Yoe
                 SyFRCnBL9uncTeVSkQVLl+KduB2ysC5hhDikc+9GmQoRdXoAWWftWQ==
-                -----END RSA PRIVATE KEY-----"
+                -----END RSA PRIVATE KEY-----
           script: |
             echo "🔐 Fixing permissions..."
             sudo chown -R www-data:www-data /var/www/frontend
