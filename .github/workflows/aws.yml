@@ -24,7 +24,7 @@ jobs:
       # ✅ FIX: no spaces around '='
       - name: Create .env file
         run: |
-          echo "VITE_SERVER_URI=${{ secrets.VITE_SERVER_URI }}" >> .env
+          echo "VITE_SERVER_URI=${{ secrets.VITE_SERVER_URI }}" > .env
           echo "VITE_GOOGLE_ID=${{ secrets.VITE_GOOGLE_ID }}" >> .env
 
       - name: Build project
